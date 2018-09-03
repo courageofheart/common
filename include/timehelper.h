@@ -23,6 +23,9 @@ extern "C"
 	//获取UUID
 	char * getUUID();
 
+	//获取单调时间
+	time_t getMonotonicTime();
+
 #ifdef __cplusplus
 }
 #endif

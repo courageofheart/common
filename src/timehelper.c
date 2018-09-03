@@ -124,3 +124,25 @@ char * getUUID()
 	return pcRes;
 }
 
+/********************************************************
+   Func Name: getMonotonicTime
+Date Created: 2018-9-3
+ Description: 获取单调时间
+       Input: 
+      Output: 
+      Return: 时间戳
+     Caution: 
+*********************************************************/
+time_t getMonotonicTime()
+{
+	struct timespec ts;
+
+	if (clock_gettime(CLOCK_MONOTONIC_RAW, &ts))
+	{
+		return 0;
+	}
+
+	return ts.tv_sec;
+}
+
+
