@@ -26,6 +26,12 @@ extern "C"
 	//获取单调时间
 	time_t getMonotonicTime();
 
+	//秒定时器
+	void secondTimer(long lSec);
+
+	//微秒定时器
+	void microsecondTimer(long lusec);
+
 #ifdef __cplusplus
 }
 #endif

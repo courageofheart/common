@@ -5,6 +5,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/select.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <errno.h>
 
 #define DEFAULT_SIZE 1024
 #define UUID_LEN 37
@@ -144,5 +149,57 @@ time_t getMonotonicTime()
 
 	return ts.tv_sec;
 }
+
+/********************************************************
+   Func Name: selectTimer
+Date Created: 2018-9-4
+ Description: select°æ¶¨Ê±Æ÷
+       Input: lSec£ºÃë
+	         lusec£ºÎ¢Ãî
+      Output: 
+      Return: 
+     Caution: 
+*********************************************************/
+void selectTimer(long lSec,long lusec)
+{
+	int infds = 0;
+	struct timeval stTimeval;
+	do 
+	{
+		stTimeval.tv_sec = lSec;
+		stTimeval.tv_usec = lusec;
+		infds = select(0, NULL, NULL, NULL, &stTimeval);
+	} while ((infds < 0 && EINTR == errno));
+}
+
+/********************************************************
+   Func Name: secondTimer
+Date Created: 2018-9-4
+ Description: Ãë¶¨Ê±Æ÷
+       Input: lSec£ºÃë
+      Output: 
+      Return: 
+     Caution: 
+*********************************************************/
+void secondTimer(long lSec)
+{
+	selectTimer(lSec, 0);
+}
+
+/********************************************************
+   Func Name: microsecondTimer
+Date Created: 2018-9-4
+ Description: Î¢Ãë¶¨Ê±Æ÷
+       Input: lusec£ºÎ¢Ãî
+      Output: 
+      Return: 
+     Caution: 
+*********************************************************/
+void microsecondTimer(long lusec)
+{
+	selectTimer(0, lusec);
+}
+
+
 
 
