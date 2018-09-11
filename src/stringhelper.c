@@ -216,7 +216,6 @@ int removeCharacter(char * pcSrc, char cAppoint)
     return 0;
 }
 
-
 /********************************************************
    Func Name: releaseGridMemory
 Date Created: 2018-7-5
@@ -253,6 +252,34 @@ void releaseGridMemory(char ***pcGrid)
 	}
 	pcArr = NULL;
 	*pcGrid = NULL;
+}
+
+/********************************************************
+   Func Name: releaseGridMemory
+Date Created: 2018-7-5
+ Description: 释放字符串指针数组
+       Input: pcGrid：字符串数组的指针
+      Output: 
+      Return: 
+     Caution: 会修改源数据
+*********************************************************/
+void replaceCharacter(const char *pcSrc, char cFrom, char cTo)
+{
+	char *pcIndex = NULL;
+
+	if (NULL == pcSrc)
+	{
+		return;
+	}
+	pcIndex = (char *)pcSrc;
+	while (*pcIndex)
+	{
+		if (cFrom == *pcIndex)
+		{
+			*pcIndex = cTo;
+		}
+		pcIndex++;
+	}
 }
 
 

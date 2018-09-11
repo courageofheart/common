@@ -27,6 +27,9 @@ extern "C"
 	//释放字符串指针数组
 	void releaseGridMemory(char ***pcGrid);
 
+	//替换指定字符
+	void replaceCharacter(const char *pcSrc, char cFrom, char cTo);
+
 
 #ifdef __cplusplus
 }

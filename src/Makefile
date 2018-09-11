@@ -6,7 +6,7 @@ CXX=g++
 LINK=g++
 
 #-fpermissive：表示兼容老语法
-COM_FLAGS= -g -Wall 
+COM_FLAGS= -g -Wall -DTEST
 SO_FLAGS=-fPIC
 SO_LINK=-shared
 S_FLAGS= -fpermissive
