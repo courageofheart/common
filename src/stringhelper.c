@@ -255,15 +255,15 @@ void releaseGridMemory(char ***pcGrid)
 }
 
 /********************************************************
-   Func Name: releaseGridMemory
+   Func Name: replaceCharacter
 Date Created: 2018-7-5
- Description: 释放字符串指针数组
+ Description: 替换指定字符
        Input: pcGrid：字符串数组的指针
       Output: 
       Return: 
      Caution: 会修改源数据
 *********************************************************/
-void replaceCharacter(const char *pcSrc, char cFrom, char cTo)
+void replaceCharacter(char *pcSrc, char cFrom, char cTo)
 {
 	char *pcIndex = NULL;
 
@@ -282,4 +282,54 @@ void replaceCharacter(const char *pcSrc, char cFrom, char cTo)
 	}
 }
 
+/********************************************************
+   Func Name: 替换指定字符串
+Date Created: 2018-7-5
+ Description: 释放字符串指针数组
+       Input: pcGrid：字符串数组的指针
+      Output: 
+      Return: 
+     Caution: 会修改源数据
+*********************************************************/
+void replaceString(char *pcSrc, const char *pcFrom, const char *pcTo)
+{
+	char *pcPrev = NULL;
+	char *pcNext = NULL;
+	char *pcOut = NULL;
+	char *pcOutIndex = NULL;
+	int len = 0;
+
+	if (NULL == pcSrc || NULL == pcFrom || NULL == pcTo)
+	{
+		return;
+	}
+	//保护
+	if (strlen(pcTo) > strlen(pcFrom))
+	{
+		return;
+	}
+	pcOut = (char *)malloc(strlen(pcSrc) + 1);
+	if (NULL == pcOut)
+	{
+		return;
+	}
+	memset(pcOut, 0, strlen(pcSrc) + 1);
+	pcOutIndex = pcOut;
+	len = strlen(pcSrc);
+	pcPrev = (char *)pcSrc;
+	pcNext = strstr(pcPrev, pcFrom);
+	while (pcNext)
+	{
+		memcpy(pcOutIndex, pcPrev, pcNext - pcPrev);
+		pcOutIndex += (pcNext - pcPrev);
+		pcPrev = pcNext + strlen(pcFrom);
+		strcpy(pcOutIndex, pcTo);
+		pcOutIndex += strlen(pcTo);
+		pcNext = strstr(pcPrev, pcFrom);
+	}
+	strcpy(pcOutIndex, pcPrev);
+	//替换完成
+	memset(pcSrc, 0, len);
+	strcpy(pcSrc, pcOut);
+}
 

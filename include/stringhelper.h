@@ -28,7 +28,10 @@ extern "C"
 	void releaseGridMemory(char ***pcGrid);
 
 	//Ìæ»»Ö¸¶¨×Ö·û
-	void replaceCharacter(const char *pcSrc, char cFrom, char cTo);
+	void replaceCharacter(char *pcSrc, char cFrom, char cTo);
+
+	//Ìæ»»Ö¸¶¨×Ö·û´®
+	void replaceString(char *pcSrc, const char *pcFrom, const char *pcTo);
 
 
 #ifdef __cplusplus

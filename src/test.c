@@ -15,8 +15,8 @@
 
 void test()
 {
-	char p[] = "aaasssddfdgaaafgd";
-	replaceCharacter((char *)p, 'a', '#');
+	char p[] = "aaas#0ssddf#0dgaa#0afgd";
+	replaceString((char *)p, "#0", "@1");
 	printf("p = %s\n", p);
 
 }
