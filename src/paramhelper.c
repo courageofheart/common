@@ -106,7 +106,7 @@ StListHead *parseParam(int argc, char ** argv, const char *pcOptString, const st
 				strcpy(pstNode->gcValue, optarg);
 			}
 		}
-		List_PushBack(pstHead, &pstNode->stNode);
+		Link_PushBack(pstHead, &pstNode->stNode);
 	}
 
 	return pstHead;
@@ -130,7 +130,7 @@ void releaseSource(StListHead *pstHead)
 		return;
 	}
 
-	while ((pstOptionNode = LIST_ENTRY(List_PopFront(pstHead),STOptionNode,stNode)))
+	while ((pstOptionNode = LIST_ENTRY(Link_PopFront(pstHead),STOptionNode,stNode)))
 	{
 		free(pstHead);
 		pstHead = NULL;

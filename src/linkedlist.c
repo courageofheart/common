@@ -1,7 +1,37 @@
 
 #include "linkedlist.h"
 
-StListNode * List_First(StListHead *pstHead)
+#include <stdlib.h>
+#include <string.h>
+
+StListHead * Link_Head_Init()
+{
+	StListHead * pstHead = NULL;
+	pstHead = (StListHead *)malloc(sizeof(StListHead));
+	if (NULL == pstHead)
+	{
+		return NULL;
+	}
+	memset(pstHead, 0, sizeof(StListHead));
+
+	return pstHead;
+}
+
+void Link_Release(StListHead **pstHead)
+{
+	StListHead * pstTemp = NULL;
+	if (NULL == pstHead)
+	{
+		return ;
+	}
+	pstTemp = *pstHead;
+	memset(pstTemp, 0, sizeof(StListHead));
+	free(pstTemp);
+	pstTemp = NULL;
+	*pstHead = NULL;
+}
+
+StListNode * Link_First(StListHead *pstHead)
 {
 	StListNode *pstCurNode = NULL;
 
@@ -15,7 +45,7 @@ StListNode * List_First(StListHead *pstHead)
 	return pstCurNode;
 }
 
-void List_PushBack(StListHead *pstHead, StListNode *pstNode)
+void Link_PushBack(StListHead *pstHead, StListNode *pstNode)
 {
 	StListNode *pstCurNode = NULL;
 
@@ -38,7 +68,7 @@ void List_PushBack(StListHead *pstHead, StListNode *pstNode)
 	pstCurNode->pstNext = pstNode;
 }
 
-StListNode * List_PopFront(StListHead *pstHead)
+StListNode * Link_PopFront(StListHead *pstHead)
 {
 	StListNode *pstCurNode = NULL;
 	StListNode *pstNextNode = NULL;

@@ -17,7 +17,7 @@ Date Created: 2018-7-3
       Return: 无
      Caution: 
 *********************************************************/
-static void inipGetString(IN dictionary * dicIni, IN const char * pcKey, OUT STIniParserResult *pstResult)
+static void inipGetString(dictionary *dicIni, const char *pcKey, STIniParserResult *pstResult)
 {
 	if (NULL == dicIni || pcKey == NULL || NULL == pstResult)
 	{
@@ -26,10 +26,10 @@ static void inipGetString(IN dictionary * dicIni, IN const char * pcKey, OUT STI
 	pstResult->pcStrResult = (char *)iniparser_getstring(dicIni, pcKey, NULL);
 	if (NULL == pstResult->pcStrResult)
 	{
-		pstResult->iErrorCode = DATA_ERROR;
+		pstResult->iErrorCode = -1;
 	}else
 	{
-		pstResult->iErrorCode = RESULT_OK;
+		pstResult->iErrorCode = 0;
 	}
 }
 
@@ -43,7 +43,7 @@ Date Created: 2018-7-3
       Return: 无
      Caution: 
 *********************************************************/
-static void inipGetInt(IN dictionary * dicIni, IN const char * pcKey, OUT STIniParserResult *pstResult)
+static void inipGetInt(dictionary *dicIni, const char *pcKey, STIniParserResult *pstResult)
 {
 	int iResCode1 = 0, iResCode2 = 1, iResCode = 0;
 	int iFlag = 0;
@@ -59,11 +59,11 @@ static void inipGetInt(IN dictionary * dicIni, IN const char * pcKey, OUT STIniP
 	}
 	if (iFlag > 1)
 	{
-		pstResult->iErrorCode = DATA_ERROR;
+		pstResult->iErrorCode = -1;
 	}else
 	{
 		pstResult->iIntResult = iResCode;
-		pstResult->iErrorCode = RESULT_OK;
+		pstResult->iErrorCode = 0;
 	}
 }
 
@@ -77,7 +77,7 @@ Date Created: 2018-7-3
       Return: 无
      Caution: 
 *********************************************************/
-static void inipGetDouble(IN dictionary * dicIni, IN const char * pcKey, OUT STIniParserResult *pstResult)
+static void inipGetDouble(dictionary *dicIni, const char *pcKey, STIniParserResult *pstResult)
 {
 	double iResCode1 = 0.0001, iResCode2 = 0.0002, iResCode = 0.0;
 	int iFlag = 0;
@@ -93,11 +93,11 @@ static void inipGetDouble(IN dictionary * dicIni, IN const char * pcKey, OUT STI
 	}
 	if (iFlag > 1)
 	{
-		pstResult->iErrorCode = DATA_ERROR;
+		pstResult->iErrorCode = -1;
 	}else
 	{
 		pstResult->dDoubleResult = iResCode;
-		pstResult->iErrorCode = RESULT_OK;
+		pstResult->iErrorCode = 0;
 	}
 }
 
@@ -111,17 +111,17 @@ Date Created: 2018-7-3
       Return: 无
      Caution: 
 *********************************************************/
-static void inipGetBool(IN dictionary * dicIni, IN const char * pcKey, OUT STIniParserResult *pstResult)
+static void inipGetBool(dictionary *dicIni, const char *pcKey, STIniParserResult *pstResult)
 {
 	int iResCode = -1, iTestNum = -2;
 	iResCode = iniparser_getboolean(dicIni, pcKey, iTestNum);
 	if (iResCode == iTestNum)
 	{
-		pstResult->iErrorCode = DATA_ERROR;
+		pstResult->iErrorCode = -1;
 	}else
 	{
 		pstResult->iBoolResult = iResCode;
-		pstResult->iErrorCode = RESULT_OK;
+		pstResult->iErrorCode = 0;
 	}
 }
 
@@ -152,7 +152,7 @@ STIniParserResult * getIniValue(dictionary * dicIni, const char *pcSectionName, 
 
 	if (NULL == dicIni || NULL == pcSectionName || NULL == pcKey)
 	{
-		pstResult->iErrorCode = PARAM_ERROR;
+		pstResult->iErrorCode = -1;
 		return pstResult;
 	}
 	//多一个":"和"/0"
@@ -160,7 +160,7 @@ STIniParserResult * getIniValue(dictionary * dicIni, const char *pcSectionName, 
 	pcSectionKey = (char *)malloc(uiLen);
 	if(NULL == pcSectionKey)
 	{
-		pstResult->iErrorCode = MALLOC_ERROR;
+		pstResult->iErrorCode = -1;
 		return pstResult;
 	}
 	memset(pcSectionKey, 0, uiLen);
@@ -180,7 +180,7 @@ STIniParserResult * getIniValue(dictionary * dicIni, const char *pcSectionName, 
 		inipGetBool(dicIni, pcSectionKey, pstResult);
 		break;
 	default:
-		pstResult->iErrorCode = DATA_ERROR;
+		pstResult->iErrorCode = -1;
 		break;
 	}
 	if(pcSectionKey)
@@ -201,28 +201,28 @@ Date Created: 2018-7-3
       Return: errcode
      Caution: need call releaseIniParser()
 *********************************************************/
-int initIniParser(IN const char *pcFileName ,IN dictionary **dicIni)
+int initIniParser(const char *pcFileName , dictionary **dicIni)
 {
-	int iResultCode = DEFAULT_ERROR;
+	int iResultCode = -1;
 
 	if (NULL == pcFileName || NULL == dicIni)
 	{
-		iResultCode = PARAM_ERROR;
+		iResultCode = -1;
 		return iResultCode;
 	}
 	
 	if (access(pcFileName, F_OK))
 	{
-		iResultCode = FILE_NOTEXIST_ERROR;
+		iResultCode = -1;
 		return iResultCode;
 	}
 	*dicIni = iniparser_load(pcFileName);
 	if(NULL == *dicIni)
 	{
-		iResultCode = DEFAULT_ERROR;
+		iResultCode = -1;
 		return iResultCode;
 	}
-	return RESULT_OK;
+	return -1;
 }
 
 /********************************************************
@@ -234,7 +234,7 @@ Date Created: 2018-7-3
       Return: 
      Caution: 
 *********************************************************/
-void releaseIniParser(IN dictionary * dicIni)
+void releaseIniParser( dictionary *dicIni)
 {
 	if (dicIni)
 	{
@@ -252,22 +252,22 @@ Date Created: 2018-7-4
       Return: error code
      Caution: 
 *********************************************************/
-int getSectionCount(IN dictionary *dicIni, IN int *iSenctionCount)
+int getSectionCount(dictionary *dicIni, int *iSenctionCount)
 {
-	int iResultCode = DEFAULT_ERROR;
+	int iResultCode = -1;
 	if (NULL == dicIni || NULL == iSenctionCount)
 	{
-		iResultCode = PARAM_ERROR;
+		iResultCode = -1;
 		return iResultCode;
 	}
 	iResultCode = iniparser_getnsec(dicIni);
 	if (-1 == iResultCode)
 	{
-		iResultCode = DATA_ERROR;
+		iResultCode = -1;
 		return iResultCode;
 	}
 	*iSenctionCount = iResultCode;
-	return RESULT_OK;
+	return 0;
 }
 
 /********************************************************
@@ -280,23 +280,23 @@ Date Created: 2018-7-4
       Return: error code
      Caution: Do not free or modify the returned pcResult
 *********************************************************/
-int getSectionByIndex( IN dictionary * dicIni, IN unsigned int n, OUT char **pcResult)
+int getSectionByIndex( dictionary *dicIni, unsigned int n, char **pcResult)
 {
-	int iResultCode = DEFAULT_ERROR;
+	int iResultCode = -1;
 	char *pcTmp = NULL;
 	if (NULL == dicIni || NULL == pcResult)
 	{
-		iResultCode = PARAM_ERROR;
+		iResultCode = -1;
 		return iResultCode;
 	}
 	pcTmp = (char *)iniparser_getsecname(dicIni, (int)n);
 	if (NULL == pcTmp)
 	{
-		iResultCode = DATA_ERROR;
+		iResultCode = -1;
 		return iResultCode;
 	}
 	*pcResult = pcTmp;
-	return RESULT_OK;
+	return 0;
 }
 
 /********************************************************
@@ -309,23 +309,23 @@ Date Created: 2018-7-4
       Return: error code
      Caution: 
 *********************************************************/
-int getSectionKeyCount( IN dictionary * dicIni, IN const char *pcSectionName, OUT unsigned int *n)
+int getSectionKeyCount( dictionary *dicIni, const char *pcSectionName, unsigned int *n)
 {
-	int iResultCode = DEFAULT_ERROR;
+	int iResultCode = -1;
 	unsigned int num = 0;
 	if (NULL == dicIni || NULL == pcSectionName || NULL == n)
 	{
-		iResultCode = PARAM_ERROR;
+		iResultCode = -1;
 		return iResultCode;
 	}
 	num = (unsigned int)iniparser_getsecnkeys(dicIni,pcSectionName);
 	if (0 == num)
 	{
-		iResultCode = DATA_ERROR;
+		iResultCode = -1;
 		return iResultCode;
 	}
 	*n = num;
-	return RESULT_OK;
+	return 0;
 }
 
 /********************************************************
@@ -338,16 +338,16 @@ Date Created: 2018-7-4
       Return: error code
      Caution: pcKeys必须有函数调用者进行分配，但是pcKeys数组中的元素的内存不需要由调用者释放
 *********************************************************/
-int getSectionKeys(IN dictionary * dicIni, IN const char *pcSectionName,INOUT char **pcKeys)
+int getSectionKeys(dictionary *dicIni, const char *pcSectionName, char **pcKeys)
 {
-	int iResultCode = DEFAULT_ERROR;
+	int iResultCode = -1;
 	if (NULL == dicIni || NULL == pcSectionName || NULL == pcKeys)
 	{
-		iResultCode = PARAM_ERROR;
+		iResultCode = -1;
 		return iResultCode;
 	}
 	iniparser_getseckeys(dicIni, pcSectionName, (const char **)pcKeys);
-	return RESULT_OK;
+	return 0;
 }
 
 /********************************************************
@@ -361,7 +361,7 @@ Date Created: 2018-7-4
       Return: error code
      Caution: 
 *********************************************************/
-char * getIniValueExtend(IN dictionary * dicIni, IN const char *pcSectionName, IN const char *pcKey)
+char * getIniValueExtend(dictionary *dicIni, const char *pcSectionName, const char *pcKey)
 {
 	STIniParserResult *pstData = NULL;
 	char * pcResult = NULL;
@@ -386,7 +386,7 @@ Date Created: 2018-7-3
       Return: key的值
      Caution: 
 *********************************************************/
-char * inipGetStringExtend(IN dictionary * dicIni, IN const char * pcKey)
+char * inipGetStringExtend(dictionary *dicIni, const char * pcKey)
 {
 	char *pcResult = NULL;
 	if (NULL == dicIni || pcKey == NULL)
