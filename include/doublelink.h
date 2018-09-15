@@ -39,6 +39,9 @@ extern "C"
 	//获取首元素
 	STDLinkNode * DLink_First(STDLinkHead *pstHead);
 
+	//获取尾元素
+	STDLinkNode * DLink_Back(STDLinkHead *pstHead);
+
 	//尾部添加
 	void DLink_PushBack(STDLinkHead *pstHead, STDLinkNode *pstNode);
 

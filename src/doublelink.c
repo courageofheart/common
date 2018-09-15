@@ -54,6 +54,20 @@ STDLinkNode * DLink_First(STDLinkHead *pstHead)
 	return pstCurNode;
 }
 
+STDLinkNode * DLink_Back(STDLinkHead *pstHead)
+{
+	STDLinkNode *pstCurNode = NULL;
+
+	if (NULL == pstHead)
+	{
+		return NULL;
+	}
+
+	pstCurNode = pstHead->pstLastNode;
+
+	return pstCurNode;
+}
+
 void DLink_PushBack(STDLinkHead *pstHead, STDLinkNode *pstNode)
 {
 	STDLinkNode *pstCurNode = NULL;
