@@ -256,7 +256,15 @@ int DLink_Empty(STDLinkHead *pstHead)
 	return 0;
 }
 
+int DLink__Size(STDLinkHead *pstHead)
+{
+	if (NULL == pstHead)
+	{
+		return 0;
+	}
 
+	return pstHead->size;
+}
 
 
 

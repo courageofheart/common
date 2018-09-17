@@ -49,6 +49,9 @@ void queue_release(STQueue **pstQueue)
 	DLink_Release(pstQueue);
 }
 
-
+int queue_size(STQueue *pstQueue)
+{
+	return DLink__Size(pstQueue);
+}
 
 

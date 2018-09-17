@@ -25,6 +25,8 @@ extern "C"
 
 	void queue_release(STQueue **pstQueue);
 
+	int queue_size(STQueue *pstQueue);
+
 
 #ifdef __cplusplus
 }

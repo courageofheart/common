@@ -67,6 +67,9 @@ extern "C"
 	//是否为空（空返回0，非空返回1）
 	int DLink__Empty(STDLinkHead *pstHead);
 
+	//获取当前元素个数
+	int DLink__Size(STDLinkHead *pstHead);
+
 	
 
 #ifdef __cplusplus
