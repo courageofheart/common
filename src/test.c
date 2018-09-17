@@ -8,22 +8,26 @@
 #include "timehelper.h"
 #include "crypto_aes.h"
 #include "doublelink.h"
+#include "gtlqueue.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 
+
 typedef struct tagSTStudent
 {
 	int age;
-	STDLinkNode stNode;
+	STQueueNode stNode;
 }STStudent;
 
 void test()
 {
+	int i = 0;
+
 	//头结点
-	STDLinkHead *head = DLink_Head_Init();
+	STQueue *head = queue_init();
 	STStudent arr[5];
 	STStudent * pstStu = NULL;
 	arr[0].age = 2;
@@ -31,16 +35,17 @@ void test()
 	arr[2].age = 4;
 	arr[3].age = 5;
 	arr[4].age = 6;
-	DLink_PushBack(head, &arr[0].stNode);
-	DLink_PushBack(head, &arr[1].stNode);
-	DLink_PushBack(head, &arr[2].stNode);
-	DLink_PushBack(head, &arr[3].stNode);
-	DLink_PushBack(head, &arr[4].stNode);
+	queue_push(head, &arr[0].stNode);
+	queue_push(head, &arr[1].stNode);
+	queue_push(head, &arr[2].stNode);
+	queue_push(head, &arr[3].stNode);
+	queue_push(head, &arr[4].stNode);
 
 	//遍历
-	DLINK_FOREACH(head, pstStu, stNode)
+	for (i = 0;i<5;i++)
 	{
-		printf("age is %d\n",pstStu->age);
+		pstStu = LIST_ENTRY(queue_pop(head), STStudent, stNode);
+		printf("age is %d\n", pstStu->age);
 	}
 
 	DLink_Release(&head);

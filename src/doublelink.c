@@ -78,6 +78,7 @@ void DLink_PushBack(STDLinkHead *pstHead, STDLinkNode *pstNode)
 	}
 
 	DLink_Node_Init(pstNode);
+	pstHead->size++;
 
 	pstCurNode = pstHead->pstFirstNode;
 	if (NULL == pstCurNode)
@@ -108,6 +109,7 @@ void DLink_PushFront(STDLinkHead *pstHead, STDLinkNode *pstNode)
 	}
 
 	DLink_Node_Init(pstNode);
+	pstHead->size++;
 
 	pstCurNode = pstHead->pstFirstNode;
 	if (NULL == pstCurNode)
@@ -140,6 +142,7 @@ STDLinkNode * DLink_PopFront(STDLinkHead *pstHead)
 		return NULL;
 	}
 
+	pstHead->size -= pstHead->size > 0 ? 1 : 0;
 	
 	if (pstHead->pstLastNode == pstCurNode)
 	{
@@ -173,7 +176,8 @@ STDLinkNode * DLink_PopEnd(STDLinkHead *pstHead)
 		return NULL;
 	}
 
-	
+	pstHead->size -= pstHead->size > 0 ? 1 : 0;
+
 	if (pstHead->pstFirstNode == pstCurNode)
 	{
 		//one element
@@ -201,16 +205,20 @@ void DLink_Remove(STDLinkHead *pstHead, STDLinkNode *pstNode)
 		return;
 	}
 
+	pstHead->size -= pstHead->size > 0 ? 1 : 0;
+
 	//remove head
 	if (pstHead->pstFirstNode == pstNode)
 	{
 		DLink_PopFront(pstHead);
+		return;
 	}
 
 	//remove tail
 	if (pstHead->pstLastNode == pstNode)
 	{
 		DLink_PopEnd(pstHead);
+		return;
 	}
 
 	pstPrevNode = pstNode->pstPrev;

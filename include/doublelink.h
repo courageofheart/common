@@ -23,6 +23,7 @@ typedef struct tagSTDLinkHead
 {
 	STDLinkNode *pstFirstNode;
 	STDLinkNode *pstLastNode;
+	int size;
 }STDLinkHead;
 
 #ifdef __cplusplus
