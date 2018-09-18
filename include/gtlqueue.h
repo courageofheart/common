@@ -8,6 +8,13 @@ typedef STDLinkNode STQueueNode;
 
 typedef STDLinkHead STQueue;
 
+#ifndef QUEUE_FOREACH
+#define QUEUE_FOREACH(pstHead, pstEntry, member) \
+for(pstEntry = LIST_ENTRY(queue_front(pstHead), typeof(*pstEntry), member); \
+pstEntry != NULL; \
+pstEntry = (pstEntry->member.pstNext)? LIST_ENTRY(pstEntry->member.pstNext, typeof(*pstEntry), member) : NULL)
+#endif
+
 #ifdef __cplusplus
 extern "C"
 {

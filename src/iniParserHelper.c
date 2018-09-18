@@ -222,7 +222,7 @@ int initIniParser(const char *pcFileName , dictionary **dicIni)
 		iResultCode = -1;
 		return iResultCode;
 	}
-	return -1;
+	return 0;
 }
 
 /********************************************************
