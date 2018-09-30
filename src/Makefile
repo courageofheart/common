@@ -6,7 +6,7 @@ CXX=g++
 LINK=g++
 
 #-fpermissive：表示兼容老语法
-COM_FLAGS= -g -Wall -DTEST
+COM_FLAGS= -g -Wall -DTEST -g3 -gdwarf-2
 SO_FLAGS=-fPIC
 SO_LINK=-shared
 S_FLAGS= -fpermissive
@@ -14,7 +14,7 @@ C_FLAGS=  -std=c11
 CXX_FLAGS= -std=c++11
 INC_PATH= -I ../include
 LIB_PATH=
-EXT_LIB= -Wl,-rpath ../lib -L ../lib -luuid -liniparser -luchardet -lcrypto -ldl -lpthread
+EXT_LIB= -Wl,-rpath ../lib -L ../lib -luuid -liniparser -luchardet -lcrypto -lpcre -ldl -lpthread
 
 PRG=test
 

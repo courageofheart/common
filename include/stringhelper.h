@@ -2,6 +2,8 @@
 #ifndef __STRINGHELPER_H_
 #define __STRINGHELPER_H_
 
+#include <stdlib.h>
+
 /* 字符串处理 */
 
 //注意：所有函数只用于字符串处理，非字符串使用将会报错
@@ -32,6 +34,9 @@ extern "C"
 
 	//替换指定字符串
 	void replaceString(char *pcSrc, const char *pcFrom, const char *pcTo);
+
+	//运算符匹配性检测
+	size_t matchOperator(const char *pcSrc, char lch, char rch);
 
 
 #ifdef __cplusplus

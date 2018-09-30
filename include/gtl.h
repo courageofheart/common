@@ -19,8 +19,11 @@ const typeof(((type *)0)->member) *__mptr = (ptr);\
 //ptr--节点指针类型。例如STDLinkNode *
 //type --数据类型  例如STStudent 这里是类型，不是变量
 //member --成员属性
-#define LIST_ENTRY(ptr, type, member) \
-container_of(ptr, type, member)
+#define LIST_ENTRY(ptr, type, member) ({\
+const typeof(((type *)0)->member) *__nptr = (ptr);\
+NULL == __nptr ? NULL : container_of(__nptr, type, member);\
+})
+
 #endif
 
 #endif

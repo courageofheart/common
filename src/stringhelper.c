@@ -1,9 +1,15 @@
 
 #include "stringhelper.h"
+#include "gtl_stack.h"
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+
+typedef struct tagSTCharacter
+{
+	char ch;
+	STStackNode stNode;
+}STCharacter;
 
 /********************************************************
    Func Name: removeLineCharacter
@@ -331,5 +337,82 @@ void replaceString(char *pcSrc, const char *pcFrom, const char *pcTo)
 	//替换完成
 	memset(pcSrc, 0, len);
 	strcpy(pcSrc, pcOut);
+}
+
+/********************************************************
+   Func Name: matchOperator
+Date Created: 2018-9-29
+ Description: 运算符匹配性检测
+	   Input: pcSrc：源字符串
+	            lch：左字符
+	            rch：右字符
+	  Output: 匹配左右字符个数--0即没有匹配
+     Caution: 
+*********************************************************/
+size_t matchOperator(const char *pcSrc, char lch, char rch)
+{
+	STStack * header = NULL;
+	const char *pcIndex = NULL;
+	STCharacter *pstNode = NULL;
+	size_t count = 0;
+
+	if (NULL == pcSrc)
+	{
+		return 0;
+	}
+
+	header = stack_init();
+	if (NULL == header)
+	{
+		return 0;
+	}
+	pcIndex = pcSrc;
+	while (*pcIndex)
+	{
+		if (lch == *pcIndex)
+		{
+			pstNode = (STCharacter *)malloc(sizeof(STCharacter));
+			if (NULL == pstNode)
+			{
+				return 0;
+			}
+			memset(pstNode, 0, sizeof(STCharacter));
+			pstNode->ch = *pcIndex;
+			//入栈
+			stack_push(header, &pstNode->stNode);
+		}else if (rch == *pcIndex)
+		{
+			pstNode = LIST_ENTRY(stack_top(header),STCharacter,stNode);
+			if (pstNode)
+			{
+				//匹配到相应符号
+				count++;
+				//弹出栈顶元素
+				pstNode = LIST_ENTRY(stack_pop(header), STCharacter, stNode);
+				if (pstNode)
+				{
+					free(pstNode);
+					pstNode = NULL;
+				}
+			}
+			//无法匹配到对应的符号，舍弃
+		}
+		pcIndex++;
+	}
+
+	//清理内存
+	if (!stack_empty(header))
+	{
+		while (pstNode = LIST_ENTRY(stack_pop(header),STCharacter,stNode),pstNode)
+		{
+			if (pstNode)
+			{
+				free(pstNode);
+				pstNode = NULL;
+			}
+		}
+	}
+
+	return count;
 }
 

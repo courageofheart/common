@@ -1,5 +1,5 @@
 
-#include "doublelink.h"
+#include "gtl_doublelist.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -96,6 +96,7 @@ void DLink_PushBack(STDLinkHead *pstHead, STDLinkNode *pstNode)
 	}
 
 	pstCurNode->pstNext = pstNode;
+	pstNode->pstPrev = pstCurNode;
 	pstHead->pstLastNode = pstNode;
 }
 
@@ -123,6 +124,7 @@ void DLink_PushFront(STDLinkHead *pstHead, STDLinkNode *pstNode)
 	//list not null
 	pstHead->pstFirstNode = pstNode;
 	pstNode->pstNext = pstCurNode;
+	pstCurNode->pstPrev = pstNode;
 
 }
 
@@ -264,6 +266,16 @@ int DLink__Size(STDLinkHead *pstHead)
 	}
 
 	return pstHead->size;
+}
+
+int DLink__Empty(STDLinkHead *pstHead)
+{
+	if (NULL == pstHead)
+	{
+		return 0;
+	}
+
+	return 0 == pstHead->size;
 }
 
 

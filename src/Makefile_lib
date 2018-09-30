@@ -15,7 +15,7 @@ S_FLAGS= -fpermissive
 C_FLAGS=  -std=c11
 CXX_FLAGS= -std=c++11
 INC_PATH= -I ../include
-EXT_LIB=-L ../lib -luuid -liniparser -luchardet -lcrypto -ldl -lpthread
+EXT_LIB=-L ../lib -luuid -liniparser -luchardet -lcrypto -lpcre -ldl -lpthread
 
 LIB_A=libgunity.a
 LIB_SO=libgunity.so
