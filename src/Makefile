@@ -13,8 +13,10 @@ S_FLAGS= -fpermissive
 C_FLAGS=  -std=c11
 CXX_FLAGS= -std=c++11
 INC_PATH= -I ../include
-LIB_PATH=
-EXT_LIB= -Wl,-rpath ../lib -L ../lib -luuid -liniparser -luchardet -lcrypto -lpcre -ldl -lpthread
+#外部静态库
+EXT_LIB= -L ../lib -luuid -liniparser -luchardet -lcrypto
+#外部动态库
+EXT_DLL=  -Wl,-rpath ../dll -L ../dll -lpcre  -ldl -lpthread
 
 PRG=test
 
@@ -29,7 +31,7 @@ all:$(PRG)
 
 #链接的时候需要库文件
 $(PRG):$(CXX_OBJS) $(C_OBJS)
-	$(CXX) $^ $(LIB_PATH) $(EXT_LIB)  -o $@
+	$(CXX) $^ $(LIB_PATH) $(EXT_LIB) $(EXT_DLL)  -o $@
 
 #编译的时候需要头文件
 %.o:%.cpp
