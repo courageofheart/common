@@ -34,7 +34,7 @@ void test()
 	int outLen2 = 0;
 
 	//加密
-	result = aes_encode(key1, key2, p, strlen(p), &pcOut1, &outLen1);
+	result = rsa_encode("prikey.pem", p, strlen(p), &pcOut1, &outLen1);
 	if (result)
 	{
 		printf("des_encode() error .\n");
@@ -44,7 +44,7 @@ void test()
 	printf("Ciphertext[%s] and size[%d] .\n", pcOut1, outLen1);
 
 	//解密
-	result = aes_decode(key1, key2, pcOut1, outLen1, &pcOut2, &outLen2);
+	result = rsa_decode("yntcom.de", pcOut1, outLen1, &pcOut2, &outLen2);
 	if (result)
 	{
 		printf("des_decode() error .\n");

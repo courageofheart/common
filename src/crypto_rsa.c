@@ -152,7 +152,7 @@ Date Created: 2018-8-22
 	  Output:    pcCiphertext：密文
 			  piCiphertextLen：密文长度
       Return: 0表示加密成功，-1表示加密失败
-     Caution: pcCiphertext内存需要由调用函数释放
+     Caution: pcCiphertext内存需要由调用函数释放,加密后密文为字符串
 *********************************************************/
 int rsa_encode(const char *pcPrikeyPath,char *pcPlaintext, int iPlaintextLen, char **pcCiphertext, int *piCiphertextLen)
 {
@@ -253,7 +253,7 @@ Date Created: 2018-8-22
 	  Output:      pcPlaintext：明文
 			    piPlaintextLen：明文长度
       Return: 0表示解密成功，-1表示加密失败
-     Caution: pcPlaintext内存需要由调用函数释放
+     Caution: pcPlaintext内存需要由调用函数释放,解密后密文为字符串
 *********************************************************/
 int rsa_decode(const char *pcPubkeyPath, char *pcCiphertext, int iCiphertextLen, char **pcPlaintext, int *piPlaintextLen)
 {

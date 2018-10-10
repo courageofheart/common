@@ -55,7 +55,7 @@ Date Created: 2018-8-2
 	  Output:     code_out：生成编码文件
 				length_out：生成编码文件的长度
       Return: 
-     Caution: code_out内存由调用函数释放
+     Caution: code_out内存由调用函数释放，code_out是字符串
 *********************************************************/
 int base64_encode(const char *plaintext_in, int length_in, char **code_out, int *length_out)
 {
@@ -165,7 +165,7 @@ Date Created: 2018-8-3
 	  Output: plaintext_out：源文件
 		             outlen：源文件长度
       Return: 
-     Caution: plaintext_out内存由调用函数释放
+     Caution: plaintext_out内存由调用函数释放，plaintext_out是字符串
 *********************************************************/
 int base64_decode(char *code_in, int length_in, char **plaintext_out, int *outlen)
 {
