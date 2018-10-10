@@ -38,6 +38,9 @@ extern "C"
 	//运算符匹配性检测
 	size_t matchOperator(const char *pcSrc, char lch, char rch);
 
+	//字符转十六进制数字
+	char char_to_hex(char ch);
+
 
 #ifdef __cplusplus
 }

@@ -416,3 +416,79 @@ size_t matchOperator(const char *pcSrc, char lch, char rch)
 	return count;
 }
 
+/********************************************************
+	Func Name: char_to_hex
+Date Created: 2018-10-10
+	Description: 字符转十六进制数字
+		Input:
+		Output:
+		Return: 十六进制数字
+		Caution: 例如(a =10,b=11)
+*********************************************************/
+char char_to_hex(char ch)
+{
+	char data = 0;
+
+	switch (ch)
+	{
+	case '0':
+		data = 0;
+		break;
+	case '1':
+		data = 1;
+		break;
+	case '2':
+		data = 2;
+		break;
+	case '3':
+		data = 3;
+		break;
+	case '4':
+		data = 4;
+		break;
+	case '5':
+		data = 5;
+		break;
+	case '6':
+		data = 6;
+		break;
+	case '7':
+		data = 7;
+		break;
+	case '8':
+		data = 8;
+		break;
+	case '9':
+		data = 9;
+		break;
+	case 'a':
+	case 'A':
+		data = 10;
+		break;
+	case 'b':
+	case 'B':
+		data = 11;
+		break;
+	case 'c':
+	case 'C':
+		data = 12;
+		break;
+	case 'd':
+	case 'D':
+		data = 13;
+		break;
+	case 'e':
+	case 'E':
+		data = 14;
+		break;
+	case 'f':
+	case 'F':
+		data = 15;
+		break;
+	default:
+		break;
+	}
+
+	return data;
+}
+
