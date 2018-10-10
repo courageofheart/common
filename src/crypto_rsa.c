@@ -1,6 +1,5 @@
 
 #include "crypto_rsa.h"
-#include "crypto_base.h"
 #include "openssl/rsa.h"
 #include "openssl/pem.h"
 #include "openssl/err.h"
@@ -152,7 +151,7 @@ Date Created: 2018-8-22
 	  Output:    pcCiphertext：密文
 			  piCiphertextLen：密文长度
       Return: 0表示加密成功，-1表示加密失败
-     Caution: pcCiphertext内存需要由调用函数释放,加密后密文为字符串
+     Caution: pcCiphertext内存需要由调用函数释放
 *********************************************************/
 int rsa_encode(const char *pcPrikeyPath,char *pcPlaintext, int iPlaintextLen, char **pcCiphertext, int *piCiphertextLen)
 {
@@ -232,13 +231,8 @@ int rsa_encode(const char *pcPrikeyPath,char *pcPlaintext, int iPlaintextLen, ch
 		pcSpaceBuf = NULL;
 	}
 
-	//将密文转成十六进制
-	if (string_to_hex((unsigned char *)pcOutBuf, iOutlen, pcCiphertext))
-	{
-		return -1;
-	}
-
-	*piCiphertextLen = strlen(*pcCiphertext);
+	*pcCiphertext = pcOutBuf;
+	*piCiphertextLen = iOutlen;
 
 	return iRet;
 }
@@ -253,7 +247,7 @@ Date Created: 2018-8-22
 	  Output:      pcPlaintext：明文
 			    piPlaintextLen：明文长度
       Return: 0表示解密成功，-1表示加密失败
-     Caution: pcPlaintext内存需要由调用函数释放,解密后密文为字符串
+     Caution: pcPlaintext内存需要由调用函数释放
 *********************************************************/
 int rsa_decode(const char *pcPubkeyPath, char *pcCiphertext, int iCiphertextLen, char **pcPlaintext, int *piPlaintextLen)
 {
@@ -266,33 +260,25 @@ int rsa_decode(const char *pcPubkeyPath, char *pcCiphertext, int iCiphertextLen,
 	int iTempLen = 0;
 	int iRet = 0;
 	char *pcIndex = NULL;
-	unsigned char *pcRealCiphertext = NULL;
-	int realLen = 0;
 
 	if (NULL == pcPubkeyPath || NULL == pcCiphertext || NULL == pcPlaintext || NULL == piPlaintextLen)
 	{
 		return -1;
 	}
 
-	//十六进制转码
-	if (hex_to_string((unsigned char *)pcCiphertext, &pcRealCiphertext, &realLen))
-	{
-		return -1;
-	}
-
 	space = KEY_LEN / 8;
-	if (0 != (realLen % space))
+	if (0 != (iCiphertextLen % space))
 	{
 		return -1;
 	}
 
 	//密文长度绝对大于明文长度
-	pcOutBuf = (char *)malloc(realLen);
+	pcOutBuf = (char *)malloc(iCiphertextLen);
 	if (NULL == pcOutBuf)
 	{
 		return -1;
 	}
-	memset(pcOutBuf, 0, realLen);
+	memset(pcOutBuf, 0, iCiphertextLen);
 	pcIndex = pcOutBuf;
 
 	pcSpaceBuf = (char *)malloc(space);
@@ -301,10 +287,10 @@ int rsa_decode(const char *pcPubkeyPath, char *pcCiphertext, int iCiphertextLen,
 		return -1;
 	}
 
-	for (i = 0; i < realLen; i += space)
+	for (i = 0; i < iCiphertextLen; i += space)
 	{
 		memset(pcSpaceBuf, 0, space);
-		memcpy(pcSpaceBuf, pcRealCiphertext + i, space);
+		memcpy(pcSpaceBuf, pcCiphertext + i, space);
 		iRet = rsaDecodeCalculate(pcPubkeyPath, pcSpaceBuf, space, &pcTempBuf, &iTempLen);
 		if (0 != iRet)
 		{

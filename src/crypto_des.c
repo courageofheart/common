@@ -1,6 +1,5 @@
 
 #include "crypto_des.h"
-#include "crypto_base.h"
 #include "openssl/des.h"
 
 #include <stdlib.h>
@@ -88,7 +87,7 @@ Date Created: 2018-8-22
 	  Output:    pcCiphertext：密文
 			  piCiphertextLen：密文长度
       Return: 0表示加密成功，-1表示加密失败
-     Caution: pcCiphertext内存需要由调用函数释放,加密后密文为字符串
+     Caution: pcCiphertext内存需要由调用函数释放
 *********************************************************/
 int des_encode(const unsigned char *pcDesKey, char *pcPlaintext, int iPlaintextLen, char **pcCiphertext, int *piCiphertextLen)
 {
@@ -148,13 +147,8 @@ int des_encode(const unsigned char *pcDesKey, char *pcPlaintext, int iPlaintextL
 		pcIndex += DES_LEN;
 	}
 
-	//将密文转成十六进制
-	if (string_to_hex((unsigned char *)pcOut, iOutlen, pcCiphertext))
-	{
-		return -1;
-	}
-
-	*piCiphertextLen = strlen(*pcCiphertext);
+	*pcCiphertext = pcOut;
+	*piCiphertextLen = iOutlen;
 
 	return 0;
 }
@@ -169,7 +163,7 @@ Date Created: 2018-8-22
 	  Output:      pcPlaintext：明文
 			    piPlaintextLen：明文长度
       Return: 0表示解密成功，-1表示加密失败
-     Caution: pcPlaintext内存需要由调用函数释放,解密后密文为字符串
+     Caution: pcPlaintext内存需要由调用函数释放
 *********************************************************/
 int des_decode(const unsigned char *pcDesKey, char *pcCiphertext, int iCiphertextLen, char **pcPlaintext, int *piPlaintextLen)
 {
@@ -180,38 +174,29 @@ int des_decode(const unsigned char *pcDesKey, char *pcCiphertext, int iCiphertex
 	char *pcIndex = NULL;
 	unsigned char *pcTemp = NULL;
 	int iPadNum = 0;
-	unsigned char *pcRealCiphertext = NULL;
-	int realLen = 0;
 
 	if (NULL == pcDesKey || NULL == pcCiphertext || NULL == pcPlaintext || NULL == piPlaintextLen)
 	{
 		return -1;
 	}
-
-	//十六进制转码
-	if (hex_to_string((unsigned char *)pcCiphertext, &pcRealCiphertext, &realLen))
-	{
-		return -1;
-	}
-
-	if (0 != realLen%DES_LEN)
+	if (0 != iCiphertextLen%DES_LEN)
 	{
 		return -1;
 	}
 
 	//密文长度大于等于明文
-	pcOut = (char *)malloc(realLen);
+	pcOut = (char *)malloc(iCiphertextLen);
 	if (NULL == pcOut)
 	{
 		return -1;
 	}
-	memset(pcOut, 0, realLen);
+	memset(pcOut, 0, iCiphertextLen);
 	pcIndex = pcOut;
 
-	for (i = 0; i < realLen; i += DES_LEN)
+	for (i = 0; i < iCiphertextLen; i += DES_LEN)
 	{
 		memset(gcBuf, 0, DES_LEN);
-		memcpy(gcBuf, pcRealCiphertext + i, DES_LEN);
+		memcpy(gcBuf, pcCiphertext + i, DES_LEN);
 		desDecodeCalculate(pcDesKey, gcBuf, &pcTemp);
 		memcpy(pcIndex, pcTemp, DES_LEN);
 		if (pcTemp)
@@ -222,12 +207,12 @@ int des_decode(const unsigned char *pcDesKey, char *pcCiphertext, int iCiphertex
 		pcIndex += DES_LEN;
 	}
 
-	iPadNum = pcOut[realLen - 1];
+	iPadNum = pcOut[iCiphertextLen - 1];
 	if (0 != iPadNum)
 	{
 		for (i = 0; i < iPadNum; i++)
 		{
-			pcOut[realLen - 1 - i] = 0;
+			pcOut[iCiphertextLen - 1 - i] = 0;
 		}
 	}
 	else
@@ -235,7 +220,7 @@ int des_decode(const unsigned char *pcDesKey, char *pcCiphertext, int iCiphertex
 		iPadNum = DES_LEN;
 	}
 
-	iOutlen = realLen - iPadNum;
+	iOutlen = iCiphertextLen - iPadNum;
 	*pcPlaintext = pcOut;
 	*piPlaintextLen = iOutlen;
 

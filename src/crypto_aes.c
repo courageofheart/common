@@ -1,7 +1,6 @@
 
 #include "crypto_aes.h"
 #include "openssl/aes.h"
-#include "crypto_base.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -191,7 +190,7 @@ Date Created: 2018-9-5
 	  Output:    pcCiphertext：密文
 			  piCiphertextLen：密文长度
       Return: 0表示加密成功，-1表示加密失败
-     Caution: pcCiphertext内存需要由调用函数释放，加密后密文为字符串
+     Caution: pcCiphertext内存需要由调用函数释放
 *********************************************************/
 int aes_encode(const unsigned char *pcFirstKey, const unsigned char *pcSecondKey, char *pcPlaintext, int iPlaintextLen, char **pcCiphertext, int *piCiphertextLen)
 {
@@ -254,13 +253,8 @@ int aes_encode(const unsigned char *pcFirstKey, const unsigned char *pcSecondKey
 		pcIndex += SLICE_SIZE;
 	}
 
-	//将密文转成十六进制
-	if (string_to_hex((unsigned char *)pcOut,iOutlen,pcCiphertext))
-	{
-		return -1;
-	}
-
-	*piCiphertextLen = strlen(*pcCiphertext);
+	*pcCiphertext = pcOut;
+	*piCiphertextLen = iOutlen;
 
 	return 0;
 }
@@ -277,7 +271,7 @@ Date Created: 2018-9-5
 	  Output:      pcPlaintext：明文
 			    piPlaintextLen：明文长度
       Return: 0表示解密成功，-1表示加密失败
-     Caution: pcPlaintext内存需要由调用函数释放,解密后密文为字符串
+     Caution: pcPlaintext内存需要由调用函数释放
 *********************************************************/
 int aes_decode(const unsigned char *pcFirstKey, const unsigned char *pcSecondKey
 	, char *pcCiphertext, int iCiphertextLen, char **pcPlaintext, int *piPlaintextLen)
@@ -289,39 +283,29 @@ int aes_decode(const unsigned char *pcFirstKey, const unsigned char *pcSecondKey
 	char *pcIndex = NULL;
 	unsigned char *pcTemp = NULL;
 	int iPadNum = 0;
-	unsigned char *pcRealCiphertext = NULL;
-	int realLen = 0;
 
 	if (NULL == pcFirstKey || NULL == pcSecondKey || NULL == pcCiphertext || NULL == pcPlaintext || NULL == piPlaintextLen)
 	{
 		return -1;
 	}
-
-	//十六进制转码
-	if (hex_to_string((unsigned char *)pcCiphertext, &pcRealCiphertext, &realLen))
-	{
-		return -1;
-	}
-
-
-	if (0 != realLen % SLICE_SIZE)
+	if (0 != iCiphertextLen % SLICE_SIZE)
 	{
 		return -1;
 	}
 
 	//密文长度大于等于明文
-	pcOut = (char *)malloc(realLen);
+	pcOut = (char *)malloc(iCiphertextLen);
 	if (NULL == pcOut)
 	{
 		return -1;
 	}
-	memset(pcOut, 0, realLen);
+	memset(pcOut, 0, iCiphertextLen);
 	pcIndex = pcOut;
 
-	for (i = 0; i < realLen; i += SLICE_SIZE)
+	for (i = 0; i < iCiphertextLen; i += SLICE_SIZE)
 	{
 		memset(gcBuf, 0, SLICE_SIZE);
-		memcpy(gcBuf, pcRealCiphertext + i, SLICE_SIZE);
+		memcpy(gcBuf, pcCiphertext + i, SLICE_SIZE);
 		if (aesDecodeCalculate(pcFirstKey,pcSecondKey, gcBuf, &pcTemp))
 		{
 			return -1;
@@ -335,12 +319,12 @@ int aes_decode(const unsigned char *pcFirstKey, const unsigned char *pcSecondKey
 		pcIndex += SLICE_SIZE;
 	}
 
-	iPadNum = pcOut[realLen - 1];
+	iPadNum = pcOut[iCiphertextLen - 1];
 	if (0 != iPadNum)
 	{
 		for (i = 0; i < iPadNum; i++)
 		{
-			pcOut[realLen - 1 - i] = 0;
+			pcOut[iCiphertextLen - 1 - i] = 0;
 		}
 	}
 	else
@@ -348,7 +332,7 @@ int aes_decode(const unsigned char *pcFirstKey, const unsigned char *pcSecondKey
 		iPadNum = SLICE_SIZE;
 	}
 
-	iOutlen = realLen - iPadNum;
+	iOutlen = iCiphertextLen - iPadNum;
 	*pcPlaintext = pcOut;
 	*piPlaintextLen = iOutlen;
 
