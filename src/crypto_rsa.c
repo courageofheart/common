@@ -1,9 +1,10 @@
 
 #include "crypto_rsa.h"
+#include "crypto_base.h"
+#include "openssl/rsa.h"
+#include "openssl/pem.h"
+#include "openssl/err.h"
 
-#include <openssl/rsa.h>
-#include <openssl/pem.h>
-#include <openssl/err.h>
 #include <math.h>
 #include <string.h>
 
@@ -231,8 +232,13 @@ int rsa_encode(const char *pcPrikeyPath,char *pcPlaintext, int iPlaintextLen, ch
 		pcSpaceBuf = NULL;
 	}
 
-	*pcCiphertext = pcOutBuf;
-	*piCiphertextLen = iOutlen;
+	//将密文转成十六进制
+	if (string_to_hex((unsigned char *)pcOutBuf, iOutlen, pcCiphertext))
+	{
+		return -1;
+	}
+
+	*piCiphertextLen = strlen(*pcCiphertext);
 
 	return iRet;
 }
@@ -260,25 +266,33 @@ int rsa_decode(const char *pcPubkeyPath, char *pcCiphertext, int iCiphertextLen,
 	int iTempLen = 0;
 	int iRet = 0;
 	char *pcIndex = NULL;
+	unsigned char *pcRealCiphertext = NULL;
+	int realLen = 0;
 
 	if (NULL == pcPubkeyPath || NULL == pcCiphertext || NULL == pcPlaintext || NULL == piPlaintextLen)
 	{
 		return -1;
 	}
 
+	//十六进制转码
+	if (hex_to_string((unsigned char *)pcCiphertext, &pcRealCiphertext, &realLen))
+	{
+		return -1;
+	}
+
 	space = KEY_LEN / 8;
-	if (0 != (iCiphertextLen % space))
+	if (0 != (realLen % space))
 	{
 		return -1;
 	}
 
 	//密文长度绝对大于明文长度
-	pcOutBuf = (char *)malloc(iCiphertextLen);
+	pcOutBuf = (char *)malloc(realLen);
 	if (NULL == pcOutBuf)
 	{
 		return -1;
 	}
-	memset(pcOutBuf, 0, iCiphertextLen);
+	memset(pcOutBuf, 0, realLen);
 	pcIndex = pcOutBuf;
 
 	pcSpaceBuf = (char *)malloc(space);
@@ -287,10 +301,10 @@ int rsa_decode(const char *pcPubkeyPath, char *pcCiphertext, int iCiphertextLen,
 		return -1;
 	}
 
-	for (i = 0; i < iCiphertextLen; i += space)
+	for (i = 0; i < realLen; i += space)
 	{
 		memset(pcSpaceBuf, 0, space);
-		memcpy(pcSpaceBuf, pcCiphertext + i, space);
+		memcpy(pcSpaceBuf, pcRealCiphertext + i, space);
 		iRet = rsaDecodeCalculate(pcPubkeyPath, pcSpaceBuf, space, &pcTempBuf, &iTempLen);
 		if (0 != iRet)
 		{

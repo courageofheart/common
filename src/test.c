@@ -1,4 +1,4 @@
-
+ï»¿
 #ifdef TEST
 
 #include "gtl.h"
@@ -6,45 +6,53 @@
 #include "stringhelper.h"
 #include "crypto_des.h"
 #include "timehelper.h"
-#include "crypto_aes.h"
 #include "crypto_sha.h"
 #include "regularhelper.h"
+#include "crypto_aes.h"
+#include "crypto_rsa.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-void deal(char *pcData, int *regVector, size_t size, void *userArg)
-{
-	char gcData[1024] = { 0 };
-	int i = 0;
-
-	for (i = 1; i < size; i++)
-	{
-		//regVector[2 * i]±íÊ¾¿ªÊ¼Î»ÖÃ
-		//regVector[2 * i + 1] ±íÊ¾½áÊøÎ»ÖÃ
-		strncpy(gcData, pcData + regVector[2 * i], regVector[2 * i + 1] - regVector[2 * i]);
-		printf("key is %s\n", gcData);
-	}
-	printf("\n", gcData);
-}
 
 void test()
 {
-	char *p = NULL;
-	//char str[] = "http://1.203.80.138:8001/tts?user_id=speech&domain=1&language=zh&audiotype=6&rate=1&speed=5&text=asr error goodbye";
-	char str[] = "tabceftsfasdft12345t";
 	int result = 0;
-	
-	//memset(&data, 0, sizeof(STParamList));
-	int data;
+	//æµ‹è¯•des
 
-	//ÌáÈ¡ËùÓÐµÄ²ÎÊý
-	result = regularInfer(str, "t(.)(.)(.)(.)(.)t", &data, deal);
+	//åŠ å¯†å­—ç¬¦ä¸²
+	char *p = "æˆ‘çˆ±ç¥–å›½ .";
+
+	//å®šä¹‰8ä¸ªå­—èŠ‚å¯†é’¥
+	unsigned char key[16] = { '1','2','3','4','a','b','c','d' };
+	unsigned char *key1 = "0123456789abcdef";
+	unsigned char *key2 = "0123456789abcdef";
+	char *pcOut1 = NULL;
+	int outLen1 = 0;
+	char *pcOut2 = NULL;
+	int outLen2 = 0;
+
+	//åŠ å¯†
+	result = aes_encode(key1, key2, p, strlen(p), &pcOut1, &outLen1);
 	if (result)
 	{
-		printf("regularInfer() error .\n");
+		printf("des_encode() error .\n");
+		return;
 	}
+
+	printf("Ciphertext[%s] and size[%d] .\n", pcOut1, outLen1);
+
+	//è§£å¯†
+	result = aes_decode(key1, key2, pcOut1, outLen1, &pcOut2, &outLen2);
+	if (result)
+	{
+		printf("des_decode() error .\n");
+		return;
+	}
+
+	printf("text[%s] and size[%d] .\n", pcOut2, outLen2);
+
 }
 
 int main(int argc,char * argv[])

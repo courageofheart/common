@@ -1,7 +1,8 @@
 
 #include "crypto_des.h"
+#include "crypto_base.h"
+#include "openssl/des.h"
 
-#include <openssl/des.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -147,8 +148,13 @@ int des_encode(const unsigned char *pcDesKey, char *pcPlaintext, int iPlaintextL
 		pcIndex += DES_LEN;
 	}
 
-	*pcCiphertext = pcOut;
-	*piCiphertextLen = iOutlen;
+	//将密文转成十六进制
+	if (string_to_hex((unsigned char *)pcOut, iOutlen, pcCiphertext))
+	{
+		return -1;
+	}
+
+	*piCiphertextLen = strlen(*pcCiphertext);
 
 	return 0;
 }
@@ -174,29 +180,38 @@ int des_decode(const unsigned char *pcDesKey, char *pcCiphertext, int iCiphertex
 	char *pcIndex = NULL;
 	unsigned char *pcTemp = NULL;
 	int iPadNum = 0;
+	unsigned char *pcRealCiphertext = NULL;
+	int realLen = 0;
 
 	if (NULL == pcDesKey || NULL == pcCiphertext || NULL == pcPlaintext || NULL == piPlaintextLen)
 	{
 		return -1;
 	}
-	if (0 != iCiphertextLen%DES_LEN)
+
+	//十六进制转码
+	if (hex_to_string((unsigned char *)pcCiphertext, &pcRealCiphertext, &realLen))
+	{
+		return -1;
+	}
+
+	if (0 != realLen%DES_LEN)
 	{
 		return -1;
 	}
 
 	//密文长度大于等于明文
-	pcOut = (char *)malloc(iCiphertextLen);
+	pcOut = (char *)malloc(realLen);
 	if (NULL == pcOut)
 	{
 		return -1;
 	}
-	memset(pcOut, 0, iCiphertextLen);
+	memset(pcOut, 0, realLen);
 	pcIndex = pcOut;
 
-	for (i = 0; i < iCiphertextLen; i += DES_LEN)
+	for (i = 0; i < realLen; i += DES_LEN)
 	{
 		memset(gcBuf, 0, DES_LEN);
-		memcpy(gcBuf, pcCiphertext + i, DES_LEN);
+		memcpy(gcBuf, pcRealCiphertext + i, DES_LEN);
 		desDecodeCalculate(pcDesKey, gcBuf, &pcTemp);
 		memcpy(pcIndex, pcTemp, DES_LEN);
 		if (pcTemp)
@@ -207,12 +222,12 @@ int des_decode(const unsigned char *pcDesKey, char *pcCiphertext, int iCiphertex
 		pcIndex += DES_LEN;
 	}
 
-	iPadNum = pcOut[iCiphertextLen - 1];
+	iPadNum = pcOut[realLen - 1];
 	if (0 != iPadNum)
 	{
 		for (i = 0; i < iPadNum; i++)
 		{
-			pcOut[iCiphertextLen - 1 - i] = 0;
+			pcOut[realLen - 1 - i] = 0;
 		}
 	}
 	else
@@ -220,7 +235,7 @@ int des_decode(const unsigned char *pcDesKey, char *pcCiphertext, int iCiphertex
 		iPadNum = DES_LEN;
 	}
 
-	iOutlen = iCiphertextLen - iPadNum;
+	iOutlen = realLen - iPadNum;
 	*pcPlaintext = pcOut;
 	*piPlaintextLen = iOutlen;
 
