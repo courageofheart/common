@@ -1,6 +1,6 @@
 
 #include "common/crypto_des.h"
-#include "openssl/des.h"
+#include "common/openssl/des.h"
 
 #include <stdlib.h>
 #include <string.h>

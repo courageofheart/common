@@ -1,8 +1,8 @@
 
 #include "common/crypto_rsa.h"
-#include "openssl/rsa.h"
-#include "openssl/pem.h"
-#include "openssl/err.h"
+#include "common/openssl/rsa.h"
+#include "common/openssl/pem.h"
+#include "common/openssl/err.h"
 
 #include <math.h>
 #include <string.h>

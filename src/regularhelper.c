@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "common/regularhelper.h"
-#include "pcre/pcre.h"
+#include "common/pcre/pcre.h"
 #include "common/stringhelper.h"
 
 int regularLoop(pcre *re, char *pcSrc, size_t ovecCount, void *userData, FuncHandle callback);
