@@ -1,6 +1,6 @@
 
-#include "stringhelper.h"
-#include "gtl_stack.h"
+#include "common/stringhelper.h"
+#include "common/gtl_stack.h"
 
 #include <stdio.h>
 #include <string.h>

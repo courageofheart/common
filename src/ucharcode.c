@@ -4,8 +4,8 @@
 #include <string.h>
 #include <iconv.h>
 
-#include "ucharcode.h"
-#include "uchardet.h"
+#include "common/ucharcode.h"
+#include "common/uchardet.h"
 
 
 /********************************************************

@@ -1,5 +1,5 @@
 
-#include "crypto_sha.h"
+#include "common/crypto_sha.h"
 #include "openssl/sha.h"
 
 #include <stdio.h>

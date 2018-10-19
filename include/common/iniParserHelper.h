@@ -4,7 +4,7 @@
 
 /*ini文件解析函数*/
 
-#include "iniparser.h"
+#include "common/iniparser.h"
 
 typedef enum tagEMIniPraseType
 {

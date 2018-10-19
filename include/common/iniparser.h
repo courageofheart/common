@@ -25,7 +25,7 @@
  */
 /* #include <unistd.h> */
 
-#include "dictionary.h"
+#include "common/dictionary.h"
 
 #ifdef __cplusplus
 extern "C" {

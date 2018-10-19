@@ -1,15 +1,15 @@
 
 #ifdef TEST
 
-#include "gtl.h"
-#include "paramhelper.h"
-#include "stringhelper.h"
-#include "crypto_des.h"
-#include "timehelper.h"
-#include "crypto_aes.h"
-#include "crypto_sha.h"
-#include "regularhelper.h"
-#include "base64.h"
+#include "common/gtl.h"
+#include "common/paramhelper.h"
+#include "common/stringhelper.h"
+#include "common/crypto_des.h"
+#include "common/timehelper.h"
+#include "common/crypto_aes.h"
+#include "common/crypto_sha.h"
+#include "common/regularhelper.h"
+#include "common/base64.h"
 
 #include <stdio.h>
 #include <stdlib.h>

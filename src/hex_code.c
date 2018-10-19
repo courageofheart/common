@@ -1,6 +1,6 @@
 ﻿
-#include "hex_code.h"
-#include "stringhelper.h"
+#include "common/hex_code.h"
+#include "common/stringhelper.h"
 
 #include <stdio.h>
 #include <stdlib.h>

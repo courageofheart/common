@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "iniParserHelper.h"
+#include "common/iniParserHelper.h"
 
 //double类型允许的精度误差
 #define ACCURACY 0.00001

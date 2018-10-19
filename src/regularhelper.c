@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "regularhelper.h"
+#include "common/regularhelper.h"
 #include "pcre/pcre.h"
-#include "stringhelper.h"
+#include "common/stringhelper.h"
 
 int regularLoop(pcre *re, char *pcSrc, size_t ovecCount, void *userData, FuncHandle callback);
 

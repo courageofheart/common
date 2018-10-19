@@ -2,7 +2,7 @@
 #ifndef __DOUBLELINK_H_
 #define __DOUBLELINK_H_
 
-#include "gtl.h"
+#include "common/gtl.h"
 
 #ifndef DLINK_FOREACH
 #define DLINK_FOREACH(pstHead, pstEntry, member) \

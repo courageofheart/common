@@ -1,6 +1,6 @@
 
-#include "timehelper.h"
-#include "uuid.h"
+#include "common/timehelper.h"
+#include "common/uuid.h"
 
 #include <stdio.h>
 #include <stdlib.h>

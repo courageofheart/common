@@ -2,7 +2,7 @@
 #ifndef __GTL_STACK_H_
 #define __GTL_STACK_H_
 
-#include "gtl_doublelist.h"
+#include "common/gtl_doublelist.h"
 
 #include <stdlib.h>
 

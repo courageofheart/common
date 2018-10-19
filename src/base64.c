@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "base64.h"
+#include "common/base64.h"
 
 #define SRC_CHAR_SIZE 3                //源码3个字节
 #define BASE_CHAR_SIZE 4               //编码后4个字节

@@ -2,7 +2,7 @@
 #ifndef __LINKEDLIST_H_
 #define __LINKEDLIST_H_
 
-#include "gtl.h"
+#include "common/gtl.h"
 
 typedef struct tagStListNode
 {

@@ -4,7 +4,7 @@
 
 /* 命令行参数处理 */
 
-#include "gtl_list.h"
+#include "common/gtl_list.h"
 
 typedef struct tagSTOptionNode
 {

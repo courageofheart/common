@@ -1,9 +1,8 @@
 
-#include "paramhelper.h"
-#include "stringhelper.h"
+#include "common/paramhelper.h"
+#include "common/stringhelper.h"
 
 #include <stdio.h>
-
 #include <stdlib.h>
 #include <unistd.h>
 #include <getopt.h>

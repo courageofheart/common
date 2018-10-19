@@ -1,5 +1,5 @@
 
-#include "wav_analysis.h"
+#include "common/wav_analysis.h"
 
 #include <stdlib.h>
 #include <string.h>
