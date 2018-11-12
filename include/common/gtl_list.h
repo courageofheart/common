@@ -16,9 +16,9 @@ typedef struct tagStListHead
 
 #ifndef LINK_FOREACH
 #define LINK_FOREACH(pstHead, pstEntry, member) \
-for(pstEntry = LIST_ENTRY(Link_First(pstHead), typeof(*pstEntry), member); \
+for(pstEntry = LIST_ENTRY(Link_First(pstHead), __typeof__(*pstEntry), member); \
 pstEntry != NULL; \
-pstEntry = (pstEntry->member.pstNext)? LIST_ENTRY(pstEntry->member.pstNext, typeof(*pstEntry), member) : NULL)
+pstEntry = (pstEntry->member.pstNext)? LIST_ENTRY(pstEntry->member.pstNext, __typeof__(*pstEntry), member) : NULL)
 #endif
 
 #ifdef __cplusplus

@@ -6,9 +6,9 @@
 
 #ifndef DLINK_FOREACH
 #define DLINK_FOREACH(pstHead, pstEntry, member) \
-for(pstEntry = LIST_ENTRY(DLink_First(pstHead), typeof(*pstEntry), member); \
+for(pstEntry = LIST_ENTRY(DLink_First(pstHead), __typeof__(*pstEntry), member); \
 pstEntry != NULL; \
-pstEntry = (pstEntry->member.pstNext)? LIST_ENTRY(pstEntry->member.pstNext, typeof(*pstEntry), member) : NULL)
+pstEntry = (pstEntry->member.pstNext)? LIST_ENTRY(pstEntry->member.pstNext, __typeof__(*pstEntry), member) : NULL)
 #endif
 
 /* Ë«ÏòÁ´±í */
