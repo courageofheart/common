@@ -4,6 +4,7 @@
 
 #include "common/gtl.h"
 
+//DLINK_FOREACH 不允许删除节点
 #ifndef DLINK_FOREACH
 #define DLINK_FOREACH(pstHead, pstEntry, member) \
 for(pstEntry = LIST_ENTRY(DLink_First(pstHead), __typeof__(*pstEntry), member); \
