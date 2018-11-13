@@ -89,14 +89,9 @@ void DLink_PushBack(STDLinkHead *pstHead, STDLinkNode *pstNode)
 		return;
 	}
 
-	//当前列表有一个或者一个以上的元素
-	while (pstCurNode->pstNext)
-	{
-		pstCurNode = pstCurNode->pstNext;
-	}
-
-	pstCurNode->pstNext = pstNode;
-	pstNode->pstPrev = pstCurNode;
+	//双向链表尾部插入，无需遍历
+	pstNode->pstPrev = pstHead->pstLastNode;
+	pstHead->pstLastNode->pstNext = pstNode;
 	pstHead->pstLastNode = pstNode;
 }
 
