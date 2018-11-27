@@ -12,7 +12,7 @@ SO_LINK=-shared
 S_FLAGS= -fpermissive
 C_FLAGS=  -std=c11
 CXX_FLAGS= -std=c++11
-INC_PATH= -I ../include
+INC_PATH= -I ../include -I ../include/common
 #外部静态库
 EXT_LIB= -L ../lib -luuid -liniparser -luchardet -lcrypto
 #外部动态库
