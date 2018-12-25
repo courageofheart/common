@@ -8,7 +8,7 @@
 typedef struct tagSTCharacter
 {
 	char ch;
-	STStackNode stNode;
+	STGTStackNode stNode;
 }STCharacter;
 
 /********************************************************
@@ -351,7 +351,7 @@ Date Created: 2018-9-29
 *********************************************************/
 size_t matchOperator(const char *pcSrc, char lch, char rch)
 {
-	STStack * header = NULL;
+	STGTStackHead * header = NULL;
 	const char *pcIndex = NULL;
 	STCharacter *pstNode = NULL;
 	size_t count = 0;
@@ -361,7 +361,7 @@ size_t matchOperator(const char *pcSrc, char lch, char rch)
 		return 0;
 	}
 
-	header = stack_init();
+	header = GTStack_Init();
 	if (NULL == header)
 	{
 		return 0;
@@ -379,16 +379,16 @@ size_t matchOperator(const char *pcSrc, char lch, char rch)
 			memset(pstNode, 0, sizeof(STCharacter));
 			pstNode->ch = *pcIndex;
 			//入栈
-			stack_push(header, &pstNode->stNode);
+			GTStack_Push(header, &pstNode->stNode);
 		}else if (rch == *pcIndex)
 		{
-			pstNode = LIST_ENTRY(stack_top(header),STCharacter,stNode);
+			pstNode = LIST_ENTRY(GTStack_Top(header),STCharacter,stNode);
 			if (pstNode)
 			{
 				//匹配到相应符号
 				count++;
 				//弹出栈顶元素
-				pstNode = LIST_ENTRY(stack_pop(header), STCharacter, stNode);
+				pstNode = LIST_ENTRY(GTStack_Pop(header), STCharacter, stNode);
 				if (pstNode)
 				{
 					free(pstNode);
@@ -401,9 +401,9 @@ size_t matchOperator(const char *pcSrc, char lch, char rch)
 	}
 
 	//清理内存
-	if (!stack_empty(header))
+	if (!GTStack_Empty(header))
 	{
-		while (pstNode = LIST_ENTRY(stack_pop(header),STCharacter,stNode),pstNode)
+		while (pstNode = LIST_ENTRY(GTStack_Pop(header),STCharacter,stNode),pstNode)
 		{
 			if (pstNode)
 			{

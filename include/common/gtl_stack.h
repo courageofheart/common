@@ -2,29 +2,75 @@
 #ifndef __GTL_STACK_H_
 #define __GTL_STACK_H_
 
-#include "common/gtl_doublelist.h"
+#include "common/gtl_list.h"
 
 #include <stdlib.h>
 
-typedef STDLinkNode STStackNode;
-
-typedef STDLinkHead STStack;
+typedef STGTListNode STGTStackNode;
+typedef STGTListHead STGTStackHead;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-	STStack * stack_init();
+	static inline STGTStackHead * GTStack_Init()
+	{
+		STGTStackHead * pstHead = NULL;
 
-	STStackNode * stack_pop(STStack *pstStack);
+		pstHead = GTList_Head_Init();
 
-	void stack_push(STStack *pstStack, STStackNode *pstNode);
+		return pstHead;
+	}
 
-	STStackNode * stack_top(STStack *pstStack);
+	static inline void GTStack_Push(STGTStackHead *pstHead, STGTStackNode *pstNode)
+	{
+		if (NULL == pstHead || NULL == pstNode)
+		{
+			return;
+		}
+		GTList_PushBack(pstHead, pstNode);
+	}
 
-	int stack_empty(STStack *pstStack);
+	static inline STGTStackNode * GTStack_Pop(STGTStackHead *pstHead)
+	{
+		if (NULL == pstHead)
+		{
+			return NULL;
+		}
+		return GTList_PopEnd(pstHead);
+	}
 
-	size_t stack_size(STStack *pstStack);
+	static inline STGTStackNode * GTStack_Top(STGTStackHead *pstHead)
+	{
+		STGTStackNode *node = NULL;
+
+		if (NULL == pstHead)
+		{
+			return NULL;
+		}
+
+		node = GTList_First(pstHead);
+
+		return node;
+	}
+
+	static inline int GTStack_Empty(STGTStackHead *pstHead)
+	{
+		if (NULL == pstHead)
+		{
+			return 1;
+		}
+		return GTList__Empty(pstHead);
+	}
+
+	static inline int GTStack_Size(STGTStackHead *pstHead)
+	{
+		if (NULL == pstHead)
+		{
+			return 0;
+		}
+		return GTList__Size(pstHead);
+	}
 
 #ifdef __cplusplus
 }

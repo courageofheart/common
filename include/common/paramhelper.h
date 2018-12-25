@@ -8,7 +8,7 @@
 
 typedef struct tagSTOptionNode
 {
-	StListNode stNode;
+	STGTListNode stNode;
 	char gcOption[64];
 	char gcValue[256];
 }STOptionNode;
@@ -22,10 +22,10 @@ extern "C"
 #endif
 
 	//命令行参数解析
-	StListHead *parseParam(int argc, char ** argv, const char *pcOptString, const stLongOption *pstLongOption);
+	STGTListHead *parseParam(int argc, char ** argv, const char *pcOptString, const stLongOption *pstLongOption);
 
 	//释放资源
-	void releaseSource(StListHead *pstHead);
+	void releaseSource(STGTListHead *pstHead);
 
 #ifdef __cplusplus
 }

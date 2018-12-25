@@ -2,38 +2,74 @@
 #ifndef __GTL_QUEUE_H_
 #define __GTL_QUEUE_H_
 
-#include "common/gtl_doublelist.h"
+#include "common/gtl_list.h"
 
-typedef STDLinkNode STQueueNode;
-
-typedef STDLinkHead STQueue;
-
-#ifndef QUEUE_FOREACH
-#define QUEUE_FOREACH(pstHead, pstEntry, member) \
-for(pstEntry = LIST_ENTRY(queue_front(pstHead), __typeof__(*pstEntry), member); \
-pstEntry != NULL; \
-pstEntry = (pstEntry->member.pstNext)? LIST_ENTRY(pstEntry->member.pstNext, __typeof__(*pstEntry), member) : NULL)
-#endif
+typedef STGTListNode STGTQueueNode;
+typedef STGTListHead STGTQueueHead;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-	STQueue * queue_init();
+	static inline STGTQueueHead * GTQueue_Init()
+	{
+		STGTQueueHead * pstHead = NULL;
 
-	STQueueNode * queue_back(STQueue *pstQueue);
+		pstHead = GTList_Head_Init();
 
-	STQueueNode * queue_front(STQueue *pstQueue);
+		return pstHead;
+	}
 
-	void queue_push(STQueue *pstQueue, STQueueNode *pstNode);
+	static inline STGTQueueNode * GTQueue_Front(STGTQueueHead *pstHead)
+	{
+		STGTQueueNode *node = NULL;
 
-	STQueueNode * queue_pop(STQueue *pstQueue);
+		if (NULL == pstHead)
+		{
+			return NULL;
+		}
 
-	void queue_release(STQueue **pstQueue);
+		node = GTList_First(pstHead);
 
-	int queue_size(STQueue *pstQueue);
+		return node;
+	}
 
+	static inline void GTQueue_Push(STGTQueueHead *pstHead, STGTQueueNode *pstNode)
+	{
+		if (NULL == pstHead || NULL == pstNode)
+		{
+			return;
+		}
+		GTList_PushBack(pstHead, pstNode);
+	}
+
+	static inline STGTQueueNode * GTQueue_Pop(STGTQueueHead *pstHead)
+	{
+		if (NULL == pstHead)
+		{
+			return;
+		}
+		return GTList_PopFront(pstHead);
+	}
+
+	static inline int GTQueue_Empty(STGTQueueHead *pstHead)
+	{
+		if (NULL == pstHead)
+		{
+			return 1;
+		}
+		return GTList__Empty(pstHead);
+	}
+
+	static inline int GTQueue_Size(STGTQueueHead *pstHead)
+	{
+		if (NULL == pstHead)
+		{
+			return 0;
+		}
+		return GTList__Size(pstHead);
+	}
 
 #ifdef __cplusplus
 }

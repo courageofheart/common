@@ -50,10 +50,10 @@ Date Created: 2018-8-24
       Return: error code
      Caution: not thread safe
 *********************************************************/
-StListHead *parseParam(int argc, char ** argv, const char *pcOptString, const stLongOption *pstLongOption)
+STGTListHead *parseParam(int argc, char ** argv, const char *pcOptString, const stLongOption *pstLongOption)
 {
 	STOptionNode *pstNode = NULL;
-	StListHead *pstHead = NULL;
+	STGTListHead *pstHead = NULL;
 	int iOption = 0;
 	int optionIndex = 0;
 
@@ -62,12 +62,12 @@ StListHead *parseParam(int argc, char ** argv, const char *pcOptString, const st
 		return NULL;
 	}
 
-	pstHead = (StListHead *)malloc(sizeof(StListHead));
+	pstHead = (STGTListHead *)malloc(sizeof(STGTListHead));
 	if (NULL == pstHead)
 	{
 		return NULL;
 	}
-	memset(pstHead, 0, sizeof(StListHead));
+	memset(pstHead, 0, sizeof(STGTListHead));
 
 	while (iOption = getopt_long(argc, argv, pcOptString, pstLongOption, &optionIndex), iOption != -1)
 	{
@@ -105,7 +105,7 @@ StListHead *parseParam(int argc, char ** argv, const char *pcOptString, const st
 				strcpy(pstNode->gcValue, optarg);
 			}
 		}
-		Link_PushBack(pstHead, &pstNode->stNode);
+		GTList_PushBack(pstHead, &pstNode->stNode);
 	}
 
 	return pstHead;
@@ -120,7 +120,7 @@ Date Created: 2018-8-24
       Return: error code
      Caution: not thread safe
 *********************************************************/
-void releaseSource(StListHead *pstHead)
+void releaseSource(STGTListHead *pstHead)
 {
 	STOptionNode *pstOptionNode = NULL;
 
@@ -129,7 +129,7 @@ void releaseSource(StListHead *pstHead)
 		return;
 	}
 
-	while ((pstOptionNode = LIST_ENTRY(Link_PopFront(pstHead),STOptionNode,stNode)))
+	while ((pstOptionNode = LIST_ENTRY(GTList_PopFront(pstHead),STOptionNode,stNode)))
 	{
 		free(pstHead);
 		pstHead = NULL;

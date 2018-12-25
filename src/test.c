@@ -1,7 +1,6 @@
 
 #ifdef TEST
 
-#include "common/gtl.h"
 #include "common/paramhelper.h"
 #include "common/stringhelper.h"
 #include "common/crypto_des.h"
@@ -10,26 +9,55 @@
 #include "common/crypto_sha.h"
 #include "common/regularhelper.h"
 #include "common/base64.h"
+#include "common/gtl_list.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+
+
+typedef struct tagSTStudent
+{
+	STGTListNode stNode;
+	int age;
+	int no;
+}STStudent;
 
 void test()
 {
-	int ret = 0;
-	char *pcOut = NULL;
-	const char *p = "ajJzajM1enhtdHYzNmltNQ==258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-	char *p2 = NULL;
-	int len = 0;
-	char md[] = {85,234,47,90,74,110,14,155,160,222,55,184,24,155,40,248,158,142,62,108};
-	ret = base64_encode(md, 20, &pcOut, &len);
-	printf("%d\n", ret);
-	ret = sha_encode_hex(SHA_512, (unsigned char *)p, strlen(p), (unsigned char **)&p2);
-	printf("%d\n", ret);
-	printf("p2 = %s\n", p2);
-}
+	int i = 0;
+	time_t t_start, t_end;
+	STGTListHead * head = NULL;
+	STStudent *pstStu = NULL;
 
+	time(&t_start);
+
+	head = GTList_Head_Init();
+
+	for (i = 0; i < 1024 * 1024 * 200; i++)
+	{
+		STStudent *pstu = malloc(sizeof(STStudent));
+		pstu->no = i;
+		pstu->age = i / 100;
+		GTList_PushBack(head, &pstu->stNode);
+	}
+
+	while (!GTList__Empty(head))
+	{
+		pstStu = LIST_ENTRY(GTList_PopEnd(head), STStudent, stNode);
+		if (pstStu)
+		{
+			free(pstStu);
+			pstStu = NULL;
+		}
+	}
+	time(&t_end);
+
+	printf("start[%ld]--------end[%ld] . \n", t_start, t_end);
+	printf("ok . \n");
+
+}
 int main(int argc,char * argv[])
 {
 	test();
