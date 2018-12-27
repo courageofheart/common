@@ -150,14 +150,14 @@ Date Created: 2018-9-3
  Description: 判断堆是否为空
 	   Input:   pstHead：头结点
 	  Output:   
-      Return: 0表示空，非0表示非空
+      Return: 非0表示空，0表示非空
      Caution: 
 *********************************************************/
 int head_empty(head_t *pstHead)
 {
 	if (NULL == pstHead)
 	{
-		return 0;
+		return 1;
 	}
 
 	return 0 == pstHead->used;
@@ -257,7 +257,7 @@ void *heap_top(head_t *pstHead)
 }
 
 /********************************************************
-   Func Name: heap_top
+   Func Name: heap_pop
 Date Created: 2018-9-3
  Description: 弹出堆顶元素
 	   Input:   pstHead：头结点
@@ -284,13 +284,13 @@ void *heap_pop(head_t *pstHead, CompareFunc func)
 	return pvRes;
 }
 
-void test_show(head_t *pstHead, ShowFunc func)
-{
-	int i = 0;
-	for (;i < pstHead->used; i++)
-	{
-		func(pstHead->pstRoot[i]);
-	}
-}
+//void test_show(head_t *pstHead, ShowFunc func)
+//{
+//	int i = 0;
+//	for (;i < pstHead->used; i++)
+//	{
+//		func(pstHead->pstRoot[i]);
+//	}
+//}
 
 
