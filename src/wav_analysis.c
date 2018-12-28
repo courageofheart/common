@@ -1,5 +1,5 @@
 
-#include "common/wav_analysis.h"
+#include "wav_analysis.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -28,9 +28,20 @@ wav_reader_t * wav_reader_init(uint8_t *audio, uint32_t audio_size)
 
 	//文件头解析
 	memcpy(gcHead, audio, 36);
+
+	//wav文件校验
+	if (0 != strncmp("RIFF", (char *)gcHead, 4))
+	{
+		return NULL;
+	}
+
 	reader->channel = (gcHead[23] << 8) + gcHead[22];
 	reader->sampleRate = (gcHead[25] << 8) + gcHead[24];
 	reader->sampleBits = gcHead[34];
+	if (!(8 == reader->sampleBits || 16 == reader->sampleBits))
+	{
+		return NULL;
+	}
 	index += 36;
 
 	//RIFF数据块信息读取
