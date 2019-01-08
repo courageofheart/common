@@ -100,7 +100,6 @@ Date Created: 2018-9-3
 STHeapHead * heap_init(uint32_t iSize)
 {
 	STHeapHead *head = NULL;
-	void **pstTemp = NULL;
 
 	head = malloc(sizeof(STHeapHead));
 	if (NULL == head)
