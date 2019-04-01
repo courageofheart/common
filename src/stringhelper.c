@@ -5,11 +5,11 @@
 #include <stdio.h>
 #include <string.h>
 
-typedef struct tagSTCharacter
-{
-	char ch;
-	STGTStackNode stNode;
-}STCharacter;
+//typedef struct tagSTCharacter
+//{
+//	char ch;
+//	STGTStackNode stNode;
+//}STCharacter;
 
 /********************************************************
    Func Name: removeLineCharacter
@@ -351,69 +351,70 @@ Date Created: 2018-9-29
 *********************************************************/
 size_t matchOperator(const char *pcSrc, char lch, char rch)
 {
-	STGTStackHead * header = NULL;
-	const char *pcIndex = NULL;
-	STCharacter *pstNode = NULL;
-	size_t count = 0;
+	return 0;
+	//STGTStackHead * header = NULL;
+	//const char *pcIndex = NULL;
+	//STCharacter *pstNode = NULL;
+	//size_t count = 0;
 
-	if (NULL == pcSrc)
-	{
-		return 0;
-	}
+	//if (NULL == pcSrc)
+	//{
+	//	return 0;
+	//}
 
-	header = GTStack_Init();
-	if (NULL == header)
-	{
-		return 0;
-	}
-	pcIndex = pcSrc;
-	while (*pcIndex)
-	{
-		if (lch == *pcIndex)
-		{
-			pstNode = (STCharacter *)malloc(sizeof(STCharacter));
-			if (NULL == pstNode)
-			{
-				return 0;
-			}
-			memset(pstNode, 0, sizeof(STCharacter));
-			pstNode->ch = *pcIndex;
-			//入栈
-			GTStack_Push(header, &pstNode->stNode);
-		}else if (rch == *pcIndex)
-		{
-			pstNode = LIST_ENTRY(GTStack_Top(header),STCharacter,stNode);
-			if (pstNode)
-			{
-				//匹配到相应符号
-				count++;
-				//弹出栈顶元素
-				pstNode = LIST_ENTRY(GTStack_Pop(header), STCharacter, stNode);
-				if (pstNode)
-				{
-					free(pstNode);
-					pstNode = NULL;
-				}
-			}
-			//无法匹配到对应的符号，舍弃
-		}
-		pcIndex++;
-	}
+	//header = GTStack_Init();
+	//if (NULL == header)
+	//{
+	//	return 0;
+	//}
+	//pcIndex = pcSrc;
+	//while (*pcIndex)
+	//{
+	//	if (lch == *pcIndex)
+	//	{
+	//		pstNode = (STCharacter *)malloc(sizeof(STCharacter));
+	//		if (NULL == pstNode)
+	//		{
+	//			return 0;
+	//		}
+	//		memset(pstNode, 0, sizeof(STCharacter));
+	//		pstNode->ch = *pcIndex;
+	//		//入栈
+	//		GTStack_Push(header, &pstNode->stNode);
+	//	}else if (rch == *pcIndex)
+	//	{
+	//		pstNode = LIST_ENTRY(GTStack_Top(header),STCharacter,stNode);
+	//		if (pstNode)
+	//		{
+	//			//匹配到相应符号
+	//			count++;
+	//			//弹出栈顶元素
+	//			pstNode = LIST_ENTRY(GTStack_Pop(header), STCharacter, stNode);
+	//			if (pstNode)
+	//			{
+	//				free(pstNode);
+	//				pstNode = NULL;
+	//			}
+	//		}
+	//		//无法匹配到对应的符号，舍弃
+	//	}
+	//	pcIndex++;
+	//}
 
-	//清理内存
-	if (!GTStack_Empty(header))
-	{
-		while (pstNode = LIST_ENTRY(GTStack_Pop(header),STCharacter,stNode),pstNode)
-		{
-			if (pstNode)
-			{
-				free(pstNode);
-				pstNode = NULL;
-			}
-		}
-	}
+	////清理内存
+	//if (!GTStack_Empty(header))
+	//{
+	//	while (pstNode = LIST_ENTRY(GTStack_Pop(header),STCharacter,stNode),pstNode)
+	//	{
+	//		if (pstNode)
+	//		{
+	//			free(pstNode);
+	//			pstNode = NULL;
+	//		}
+	//	}
+	//}
 
-	return count;
+	//return count;
 }
 
 /********************************************************

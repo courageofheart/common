@@ -4,8 +4,13 @@
 
 #define ARRAY_LIST_DEFAULT_CAPACITY 32
 
+#ifndef GTC_MAX
 #define GTC_MAX(a,b) ((a) > (b) ? (a) : (b))
+#endif
+
+#ifndef GTC_MIN
 #define GTC_MIN(a,b) ((a) < (b) ? (a) : (b))
+#endif
 
 #include <stdint.h>
 #include <stdlib.h>
