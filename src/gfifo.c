@@ -17,22 +17,16 @@ Date Created: 2019-4-1
 *********************************************************/
 static unsigned int gtc_fifo_roundup(unsigned int x)
 {
-	unsigned int i = 0;
-	unsigned int y = 1;
+    unsigned int i = 4;
 
-	if (!x)
-	{
-		return 1;
-	}
-
-	for (i = x; i != 0; )
-	{
-		i >>= 1;
-		y <<= 1;
-	}
-
-	return y;
-
+    while (1) 
+    {
+        if (i >= x)
+        {
+            return i;
+        } 
+        i *= 2;
+    }
 }
 
 /********************************************************
