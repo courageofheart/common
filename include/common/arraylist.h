@@ -91,6 +91,30 @@ extern "C"
 		a_list = NULL;
 	}
 
+    //扩展内存
+    static int arraylist_expand_inner(gtc_arraylist_t * a_list, int max)
+    {
+        void *tmp = NULL;
+        int new_size = 0;
+        int diff_size = 0;
+
+        new_size = GTC_MAX(a_list->capacity * 2, max);
+        tmp = realloc(a_list->array, new_size * sizeof(void *));
+        if (NULL == tmp) 
+        {
+            free(a_list->array);
+            return -1;
+        }
+        a_list->array = (void **)tmp;
+        diff_size = new_size - a_list->capacity;
+        if (diff_size)
+        {
+            memset(a_list->array + a_list->capacity, 0x00, diff_size * sizeof(void *));
+        }
+        a_list->capacity = new_size;
+        return 0;
+    }
+
 	//尾部插入
 	static inline int gtc_arraylist_push_back(gtc_arraylist_t * a_list, void *data)
 	{
